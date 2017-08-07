@@ -1,4 +1,7 @@
 # Bamazon
+Functional but needs work. 
+
+
 Opening my bamazon table through the command line. 
 
 ![part1](https://user-images.githubusercontent.com/24661857/29010044-1dccd80e-7aee-11e7-8c30-94d0d93bd93f.PNG)
