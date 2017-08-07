@@ -1,17 +1,15 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 // Installed a table module where products will be displayed
-var Table = require("cli-table");
-
+var Table = require("cli-table")
 // Connect to MySQL 
 var connection = mysql = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "Chicago820!",
+    password: "",
     database: "bamazon"
-});
-
+})
 // Connect to MySQL database 
 connection.connect(function (err) {
     if (err) throw err;
@@ -19,8 +17,7 @@ connection.connect(function (err) {
     displayData(function () {
         start();
     });
-});
-
+})
 // Display table with inventory
 function displayData(data) {
     var table = new Table({
@@ -35,8 +32,7 @@ function displayData(data) {
         console.log(table.toString());
         data();
     });
-}
-
+};
 // Use the callback function
 function start() {
     // Make room between table and the welcome message
@@ -54,8 +50,7 @@ function start() {
             console.log('Come back soon!');
         }
     })
-}
-
+};
 // Create a function that allows the user to purchase items
 function viewStore() {
     inquirer.prompt([{
@@ -68,24 +63,27 @@ function viewStore() {
         message: 'Please input the quantity of the items you want to purchase'
     }]).then(function (answer) {
         connection.query('SELECT product_name, price, stock_quantity FROM products WHERE ?', {
-            item_id: answer.id
+            item_id: answer.ID
         }, function (err, res) {
-            console.log('Are you sure you want to purchase' + updated.quantity + ' ' + res[0].product_name + ' at $' + res[0].price + 'each?');
-            if (res[0].stock_quantity >= updated.quantity) {
-                var itemQuantity = res[0].stock_quantity - updated.quantity;
+            console.log('\n');
+            console.log('Purchasing ' + answer.quantity + ' ' + res[0].product_name + ' for $' + res[0].price + ' each.');
+            if (res[0].stock_quantity >= answer.quantity) {
+                var itemQuantity = res[0].stock_quantity - answer.quantity;
                 connection.query('UPDATE products SET ? WHERE ?', [{
                     stock_quantity: itemQuantity
                 }, {
-                    item_id: answer.id
+                    item_id: answer.ID
                 }], function (err, res) {});
-                var totalCost = res[0].price * answer.quantity;
-                console.log('Order confirmed! The total cost is $' + totalCost.toFixed(2));
-                displayData();
+                var cost = res[0].price * answer.quantity;
+                console.log('\n');
+                console.log('Order confirmed! The total cost is $' + cost.toFixed(2) + '.');
+                console.log('\n');
                 start();
             } else {
+                console.log('\n');
                 console.log('No can do.');
                 start();
             }
         });
     })
-}
+};
