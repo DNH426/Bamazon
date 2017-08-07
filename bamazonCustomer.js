@@ -66,5 +66,26 @@ function viewStore() {
         name: 'quantity',
         type: 'input',
         message: 'Please input the quantity of the items you want to purchase'
-    }])
-};
+    }]).then(function (answer) {
+        connection.query('SELECT product_name, price, stock_quantity FROM products WHERE ?', {
+            item_id: answer.id
+        }, function (err, res) {
+            console.log('Are you sure you want to purchase' + updated.quantity + ' ' + res[0].product_name + ' at $' + res[0].price + 'each?');
+            if (res[0].stock_quantity >= updated.quantity) {
+                var itemQuantity = res[0].stock_quantity - updated.quantity;
+                connection.query('UPDATE products SET ? WHERE ?', [{
+                    stock_quantity: itemQuantity
+                }, {
+                    item_id: answer.id
+                }], function (err, res) {});
+                var totalCost = res[0].price * answer.quantity;
+                console.log('Order confirmed! The total cost is $' + totalCost.toFixed(2));
+                displayData();
+                start();
+            } else {
+                console.log('No can do.');
+                start();
+            }
+        });
+    })
+}
