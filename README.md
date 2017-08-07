@@ -11,13 +11,16 @@ ID = 3
 Quantity = 2
 15.99 per item. 
 Total cost is 31.98
+
 ![part3](https://user-images.githubusercontent.com/24661857/29011048-7dd3a118-7af5-11e7-815c-5af2b3819412.PNG)
 
 
 Quantity goes down after every purchase.
+
 ![part4](https://user-images.githubusercontent.com/24661857/29011049-8032422a-7af5-11e7-88a6-078ee3d78495.PNG)
 
-
+Unable to purchase more than we have in stock.
+![quantity](https://user-images.githubusercontent.com/24661857/29011121-2c99bcbe-7af6-11e7-8385-648237750097.PNG)
 
 Selecting "Exit" at the start.
 
